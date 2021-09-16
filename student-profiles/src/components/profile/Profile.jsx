@@ -7,16 +7,29 @@ import Search from '../search/Search';
 export default function Profile(props) {
 
   const [profiles, setProfiles] = useState([])
+  const [searchContent, setSearchContent] = useState('')
 
   useEffect(() => {
     axios.get('https://api.hatchways.io/assessment/students')
     .then(res => {
-      setProfiles(Array.from(res.data.students))
+      const data = Array.from(res.data.students)
+      if (searchContent) {
+        const searchResult = data.filter(d => {
+          const first = d.firstName
+          const last = d.lastName
+          const lowerFirst = first.toLowerCase()
+          const lowerLast = last.toLowerCase()
+          return lowerFirst.includes(searchContent) || lowerLast.includes(searchContent)
+        })
+        setProfiles(searchResult)
+      } else {
+        setProfiles(data)
+      }
     })
-  }, [])
+  }, [searchContent])
 
   return <div className="profile">
-    <Search />
+    <Search setSearchContent={setSearchContent}/>
     {profiles && profiles.map((profile, idx) => {
       return <Card 
         key={idx}
