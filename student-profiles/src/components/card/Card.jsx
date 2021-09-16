@@ -47,7 +47,7 @@ export default function Card({id, firstName, lastName, pic, email, company, grad
           })}
         </div>
         <div className="tags">
-          {current && current.map(c => <p className="tag" style={{color: "black"}}>{c.inputTag}</p>)}
+          {current && current.map((c, idx) => <p className="tag" key={idx} style={{color: "black"}}>{c.inputTag}</p>)}
         </div>
         <form onSubmit={handleSubmit}>
           <input type="text" onChange={e => setInputTag(e.target.value)} value={inputTag}/>

@@ -11,29 +11,39 @@ export default function Profile(props) {
   const [searchTag, setSearchTag] = useState('')
   const [tags, setTags] = useState([])
 
+  const filterTag = () => {
+    return tags.filter(tag => {
+      const inputTag = tag.inputTag
+      return inputTag.includes(searchTag)
+    })
+  }
+
+  const filterName = (data) => {
+    return data.filter(d => {
+      const first = d.firstName
+      const last = d.lastName
+      const lowerFirst = first.toLowerCase()
+      const lowerLast = last.toLowerCase()
+      return lowerFirst.includes(searchContent) || lowerLast.includes(searchContent)
+    })
+  }
+
   useEffect(() => {
     axios.get('https://api.hatchways.io/assessment/students')
     .then(res => {
       const data = Array.from(res.data.students)
-
-      if (searchTag) {
-        const tagsResult = tags.filter(tag => {
-          const inputTag = tag.inputTag
-          return inputTag.includes(searchTag)
-        })
+      if (searchTag && setSearchContent){
+        const tagsResult = filterTag()
         const ids = tagsResult.map(tag => tag.id)
         const searchTagResult = data.filter(d => ids.includes(d.id))
-        console.log(searchTagResult)
+        setProfiles(filterName(searchTagResult))
+      } else if (searchTag) {
+        const tagsResult = filterTag()
+        const ids = tagsResult.map(tag => tag.id)
+        const searchTagResult = data.filter(d => ids.includes(d.id))
         setProfiles(searchTagResult)
       } else if (searchContent) {
-        const searchResult = data.filter(d => {
-          const first = d.firstName
-          const last = d.lastName
-          const lowerFirst = first.toLowerCase()
-          const lowerLast = last.toLowerCase()
-          return lowerFirst.includes(searchContent) || lowerLast.includes(searchContent)
-        })
-        setProfiles(searchResult)
+        setProfiles(filterName(data))
       } else {
         setProfiles(data)
       }
