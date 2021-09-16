@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import "./Card.scss";
 
 export default function Card({id, firstName, lastName, pic, email, company, grades, skill, tags, setTags}) {
@@ -55,7 +57,7 @@ export default function Card({id, firstName, lastName, pic, email, company, grad
       </div>
     </div>
     <div className="right">
-      <button onClick={() => setExpand(!expand)}>{expand ? "-" : "+"}</button>
+      <button onClick={() => setExpand(!expand)}>{expand ? <FontAwesomeIcon icon={faMinus} /> : <FontAwesomeIcon icon={faPlus} /> }</button>
     </div>
   </div>
 }
