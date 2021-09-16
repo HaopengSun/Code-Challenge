@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import Card from '../card/Card';
 import "./Profile.scss";
+import Search from '../search/Search';
 
 export default function Profile(props) {
 
@@ -15,6 +16,7 @@ export default function Profile(props) {
   }, [])
 
   return <div className="profile">
+    <Search />
     {profiles && profiles.map((profile, idx) => {
       return <Card 
         key={idx}
