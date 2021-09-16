@@ -1,8 +1,10 @@
+@import '../../index.scss';
+
 .card{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: solid 1px grey;
+  border-top: solid 1px #d3d3d3;
   background-color: white;
 
   .left{
@@ -29,6 +31,16 @@
       p{
         margin: 5px;
         color: gray;
+      }
+    }
+
+    .tags{
+      display: flex;
+      justify-content: flex-start;
+      .tag{
+        height: 24px;
+        text-align: center;
+        background-color: #d3d3d3;
       }
     }
   }
