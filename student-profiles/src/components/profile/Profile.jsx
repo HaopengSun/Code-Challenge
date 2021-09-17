@@ -4,8 +4,9 @@ import Card from '../card/Card';
 import "./Profile.scss";
 import Search from '../search/Search';
 
-export default function Profile(props) {
+export default function Profile() {
 
+  const [data, setData] = useState([])
   const [profiles, setProfiles] = useState([])
   const [searchContent, setSearchContent] = useState('')
   const [searchTag, setSearchTag] = useState('')
@@ -22,33 +23,37 @@ export default function Profile(props) {
     return data.filter(d => {
       const first = d.firstName
       const last = d.lastName
-      const lowerFirst = first.toLowerCase()
-      const lowerLast = last.toLowerCase()
-      return lowerFirst.includes(searchContent) || lowerLast.includes(searchContent)
+      const name = first.toLowerCase() + ' ' + last.toLowerCase()
+      return name.includes(searchContent)
     })
   }
 
   useEffect(() => {
     axios.get('https://api.hatchways.io/assessment/students')
     .then(res => {
-      const data = Array.from(res.data.students)
-      if (searchTag && setSearchContent){
-        const tagsResult = filterTag()
-        const ids = tagsResult.map(tag => tag.id)
-        const searchTagResult = data.filter(d => ids.includes(d.id))
-        setProfiles(filterName(searchTagResult))
-      } else if (searchTag) {
-        const tagsResult = filterTag()
-        const ids = tagsResult.map(tag => tag.id)
-        const searchTagResult = data.filter(d => ids.includes(d.id))
-        setProfiles(searchTagResult)
-      } else if (searchContent) {
-        setProfiles(filterName(data))
-      } else {
-        setProfiles(data)
-      }
+      const inportData = Array.from(res.data.students)
+      setData(inportData)
     })
+  }, [])
+
+  useEffect(() => {
+    if (searchTag && setSearchContent){
+      const tagsResult = filterTag()
+      const ids = tagsResult.map(tag => tag.id)
+      const searchTagResult = data.filter(d => ids.includes(d.id))
+      setProfiles(filterName(searchTagResult))
+    } else if (searchTag) {
+      const tagsResult = filterTag()
+      const ids = tagsResult.map(tag => tag.id)
+      const searchTagResult = data.filter(d => ids.includes(d.id))
+      setProfiles(searchTagResult)
+    } else if (searchContent) {
+      setProfiles(filterName(data))
+    } else {
+      setProfiles(data)
+    }
   }, [searchContent, searchTag])
+
 
   return <div className="profile">
     <Search setSearchContent={setSearchContent} placeHolder="Search by name"/>

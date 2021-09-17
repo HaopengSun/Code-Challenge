@@ -9,8 +9,8 @@ export default function Card({id, firstName, lastName, pic, email, company, grad
   const [inlineStyle, setInlineStyle] = useState({display: "none"})
   const [inputTag, setInputTag] = useState('')
 
-  const sum = grades.reduce((a, b) => a + b, 0)
-  const avg = sum / grades.length
+  const sum = grades.reduce((a, b) => Number(a) + Number(b), 0)
+  const avg = sum / grades.length + "%"
 
   useEffect(() => {
     if (expand) {
